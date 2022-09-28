@@ -18,7 +18,12 @@ impl ApexPartitionP4 for VanillaHypervisor {
                 lock_level: status.LOCK_LEVEL as LockLevel,
                 operating_mode: OperatingMode::from_repr(status.OPERATING_MODE).unwrap(),
                 start_condition: StartCondition::from_repr(status.START_CONDITION).unwrap(),
-                num_assigned_cores: status.NUM_ASSIGNED_CORES as NumCores,
+                // TODO check whether this is correct
+                // this would normally be
+                // status.NUM_ASSIGNED_CORES as NumCores
+                // but since theses headers where created for xng-monocore,
+                // the number is always 1
+                num_assigned_cores: 1,
             }
         }
     }
