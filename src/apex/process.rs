@@ -11,6 +11,11 @@ impl ApexProcessP4 for VanillaHypervisor {
     ) -> Result<ProcessId, ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         let mut process_id = MaybeUninit::uninit();
+        if attributes.name[31..=32] != [0, 0] {
+            return Err(ErrorReturnCode::InvalidParam);
+        }
+        let mut name = [0 as cty::c_char; 30];
+        name.copy_from_slice(&attributes.name.map(|c| c as _)[..30]);
         let mut process_attr = MaybeUninit::new(PROCESS_ATTRIBUTE_TYPE {
             PERIOD: attributes.period,
             TIME_CAPACITY: attributes.time_capacity,
@@ -18,7 +23,10 @@ impl ApexProcessP4 for VanillaHypervisor {
             STACK_SIZE: attributes.stack_size as STACK_SIZE_TYPE,
             BASE_PRIORITY: attributes.base_priority as PRIORITY_TYPE,
             DEADLINE: attributes.deadline as DEADLINE_TYPE,
-            NAME: attributes.name.map(|c| c as cty::c_char),
+            // TODO this should be
+            // .copy_from_slice(attributes.name.map(|c| c as APEX_BYTE))
+            // but for some reason LithOS only accepts 30 instead of 32 bytes for a name
+            NAME: name,
         });
         unsafe {
             CREATE_PROCESS(
@@ -166,6 +174,8 @@ impl ApexProcessP1 for VanillaHypervisor {
             );
             ErrorReturnCode::from(return_code.assume_init())?;
             let status = status.assume_init();
+            let mut name = [0u8; 32];
+            name[0..30].copy_from_slice(&status.ATTRIBUTES.NAME.map(|c| c as APEX_BYTE)[..]);
             Ok(ApexProcessStatus {
                 deadline_time: status.DEADLINE_TIME as ApexSystemTime,
                 current_priority: status.CURRENT_PRIORITY as Priority,
@@ -177,16 +187,21 @@ impl ApexProcessP1 for VanillaHypervisor {
                     stack_size: status.ATTRIBUTES.STACK_SIZE as StackSize,
                     base_priority: status.ATTRIBUTES.BASE_PRIORITY as Priority,
                     deadline: Deadline::from_repr(status.ATTRIBUTES.DEADLINE).unwrap(),
-                    name: status.ATTRIBUTES.NAME.map(|c| c as APEX_BYTE),
+                    // TODO this should be
+                    // .copy_from_slice(status.ATTRIBUTES.NAME.map(|c| c as APEX_BYTE))
+                    // but for some reason LithOS only accepts 30 instead of 32 bytes for a name
+                    name,
                 },
             })
         }
     }
 
     fn initialize_process_core_affinity<L: Locked>(
-        process_id: ProcessId,
-        processor_core_id: ProcessorCoreId,
+        _process_id: ProcessId,
+        _processor_core_id: ProcessorCoreId,
     ) -> Result<(), ErrorReturnCode> {
+        // TODO check whether this is good
+        /*
         let mut return_code = MaybeUninit::uninit();
         unsafe {
             INITIALIZE_PROCESS_CORE_AFFINITY(
@@ -196,17 +211,18 @@ impl ApexProcessP1 for VanillaHypervisor {
             );
             ErrorReturnCode::from(return_code.assume_init())
         }
+        */
+        Err(ErrorReturnCode::NotAvailable)
     }
 
     fn get_my_processor_core_id<L: Locked>() -> ProcessorCoreId {
-        let mut core_id = MaybeUninit::uninit();
-        unsafe {
-            GET_MY_PROCESSOR_CORE_ID(core_id.as_mut_ptr(), MaybeUninit::uninit().as_mut_ptr());
-            core_id.assume_init() as ProcessorCoreId
-        }
+        // TODO check whether this is good
+        0
     }
 
     fn get_my_index<L: Locked>() -> Result<ProcessIndex, ErrorReturnCode> {
+        // TODO check whether this is good
+        /*
         let mut return_code = MaybeUninit::uninit();
         let mut process_index = MaybeUninit::uninit();
         unsafe {
@@ -214,5 +230,7 @@ impl ApexProcessP1 for VanillaHypervisor {
             ErrorReturnCode::from(return_code.assume_init())?;
             Ok(process_index.assume_init() as ProcessIndex)
         }
+        */
+        Err(ErrorReturnCode::InvalidMode) // TODO resolve the crime
     }
 }
