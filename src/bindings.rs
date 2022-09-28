@@ -1,10 +1,3 @@
-#![allow(clippy::redundant_static_lifetimes)]
-#![allow(dead_code)]
-#![allow(missing_docs)]
-#![allow(non_camel_case_types)]
-#![allow(non_snake_case)]
-#![allow(non_upper_case_globals)]
-
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct __BindgenBitfieldUnit<Storage> {

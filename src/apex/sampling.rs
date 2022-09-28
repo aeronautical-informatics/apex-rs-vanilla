@@ -35,7 +35,7 @@ impl ApexSamplingPortP4 for VanillaHypervisor {
         let mut return_code = MaybeUninit::uninit();
         unsafe {
             WRITE_SAMPLING_MESSAGE(
-                sampling_port_id as PROCESS_ID_TYPE,
+                sampling_port_id as SAMPLING_PORT_ID_TYPE,
                 message.as_ptr() as *mut _,
                 message.len() as MESSAGE_SIZE_TYPE,
                 return_code.as_mut_ptr(),
@@ -52,7 +52,7 @@ impl ApexSamplingPortP4 for VanillaHypervisor {
         let mut msg_len = MaybeUninit::uninit();
         let mut validity = MaybeUninit::uninit();
         READ_SAMPLING_MESSAGE(
-            sampling_port_id as PROCESS_ID_TYPE,
+            sampling_port_id as SAMPLING_PORT_ID_TYPE,
             message.as_mut_ptr(),
             msg_len.as_mut_ptr(),
             validity.as_mut_ptr(),
@@ -90,7 +90,7 @@ impl ApexSamplingPortP1 for VanillaHypervisor {
         let mut status = MaybeUninit::uninit();
         unsafe {
             GET_SAMPLING_PORT_STATUS(
-                sampling_port_id as PROCESS_ID_TYPE,
+                sampling_port_id as SAMPLING_PORT_ID_TYPE,
                 status.as_mut_ptr(),
                 return_code.as_mut_ptr(),
             );

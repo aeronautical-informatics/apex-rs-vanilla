@@ -38,7 +38,7 @@ impl ApexQueuingPortP4 for VanillaHypervisor {
         let mut return_code = MaybeUninit::uninit();
         unsafe {
             SEND_QUEUING_MESSAGE(
-                queuing_port_id as PROCESS_ID_TYPE,
+                queuing_port_id as QUEUING_PORT_ID_TYPE,
                 message.as_ptr() as *mut _,
                 message.len() as MESSAGE_SIZE_TYPE,
                 time_out,
@@ -56,7 +56,7 @@ impl ApexQueuingPortP4 for VanillaHypervisor {
         let mut return_code = MaybeUninit::uninit();
         let mut msg_len = MaybeUninit::uninit();
         RECEIVE_QUEUING_MESSAGE(
-            queuing_port_id as PROCESS_ID_TYPE,
+            queuing_port_id as QUEUING_PORT_ID_TYPE,
             time_out,
             message.as_mut_ptr(),
             msg_len.as_mut_ptr(),
@@ -73,7 +73,7 @@ impl ApexQueuingPortP4 for VanillaHypervisor {
         let mut status = MaybeUninit::uninit();
         unsafe {
             GET_QUEUING_PORT_STATUS(
-                queuing_port_id as PROCESS_ID_TYPE,
+                queuing_port_id as QUEUING_PORT_ID_TYPE,
                 status.as_mut_ptr(),
                 return_code.as_mut_ptr(),
             );
@@ -94,7 +94,10 @@ impl ApexQueuingPortP4 for VanillaHypervisor {
     ) -> Result<(), ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         unsafe {
-            CLEAR_QUEUING_PORT(queuing_port_id as PROCESS_ID_TYPE, return_code.as_mut_ptr());
+            CLEAR_QUEUING_PORT(
+                queuing_port_id as QUEUING_PORT_ID_TYPE,
+                return_code.as_mut_ptr(),
+            );
             ErrorReturnCode::from(return_code.assume_init())
         }
     }
