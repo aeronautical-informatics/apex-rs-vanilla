@@ -2,10 +2,10 @@ use core::mem::MaybeUninit;
 
 use apex_rs::bindings::*;
 
-use super::VanillaHypervisor;
+use super::XngHypervisor;
 use crate::bindings::*;
 
-impl ApexSamplingPortP4 for VanillaHypervisor {
+impl ApexSamplingPortP4 for XngHypervisor {
     fn create_sampling_port<L: Locked>(
         sampling_port_name: SamplingPortName,
         max_message_size: MessageSize,
@@ -66,7 +66,7 @@ impl ApexSamplingPortP4 for VanillaHypervisor {
     }
 }
 
-impl ApexSamplingPortP1 for VanillaHypervisor {
+impl ApexSamplingPortP1 for XngHypervisor {
     fn get_sampling_port_id<L: Locked>(
         sampling_port_name: SamplingPortName,
     ) -> Result<SamplingPortId, ErrorReturnCode> {

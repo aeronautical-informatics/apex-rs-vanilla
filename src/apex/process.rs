@@ -2,10 +2,10 @@ use core::mem::MaybeUninit;
 
 use apex_rs::bindings::*;
 
-use super::VanillaHypervisor;
+use super::XngHypervisor;
 use crate::bindings::*;
 
-impl ApexProcessP4 for VanillaHypervisor {
+impl ApexProcessP4 for XngHypervisor {
     fn create_process<L: Locked>(
         attributes: &ApexProcessAttribute,
     ) -> Result<ProcessId, ErrorReturnCode> {
@@ -48,7 +48,7 @@ impl ApexProcessP4 for VanillaHypervisor {
     }
 }
 
-impl ApexProcessP1 for VanillaHypervisor {
+impl ApexProcessP1 for XngHypervisor {
     fn set_priority<L: Locked>(
         process_id: ProcessId,
         priority: Priority,

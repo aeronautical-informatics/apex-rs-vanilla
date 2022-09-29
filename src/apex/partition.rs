@@ -2,10 +2,10 @@ use core::mem::MaybeUninit;
 
 use apex_rs::bindings::*;
 
-use super::VanillaHypervisor;
+use super::XngHypervisor;
 use crate::bindings::*;
 
-impl ApexPartitionP4 for VanillaHypervisor {
+impl ApexPartitionP4 for XngHypervisor {
     fn get_partition_status<L: apex_rs::Locked>() -> ApexPartitionStatus {
         let mut status = MaybeUninit::uninit();
         unsafe {

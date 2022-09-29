@@ -13,5 +13,5 @@ pub mod schedules;
 /// [apex_rs::bindings::ApexTimeP1] and [apex_rs::bindings::ApexTimeP4] bindings
 pub mod time;
 
-/// Static struct representing a Vanilla Hypervisor
-pub struct VanillaHypervisor;
+/// Static struct representing a Xng Hypervisor
+pub struct XngHypervisor;
