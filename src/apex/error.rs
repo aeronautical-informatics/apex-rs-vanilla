@@ -2,10 +2,10 @@ use core::mem::MaybeUninit;
 
 use apex_rs::bindings::*;
 
-use super::VanillaHypervisor;
+use super::XngHypervisor;
 use crate::bindings::*;
 
-impl ApexErrorP4 for VanillaHypervisor {
+impl ApexErrorP4 for XngHypervisor {
     fn report_application_message<L: Locked>(message: &[ApexByte]) -> Result<(), ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         unsafe {
@@ -35,7 +35,7 @@ impl ApexErrorP4 for VanillaHypervisor {
     }
 }
 
-impl ApexErrorP1 for VanillaHypervisor {
+impl ApexErrorP1 for XngHypervisor {
     fn create_error_handler<L: Locked>(
         entry_point: SystemAddress,
         stack_size: StackSize,

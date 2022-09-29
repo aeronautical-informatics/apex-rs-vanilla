@@ -2,10 +2,10 @@ use core::mem::MaybeUninit;
 
 use apex_rs::bindings::*;
 
-use super::VanillaHypervisor;
+use super::XngHypervisor;
 use crate::bindings::*;
 
-impl ApexScheduleP2 for VanillaHypervisor {
+impl ApexScheduleP2 for XngHypervisor {
     fn set_module_schedule<L: Locked>(schedule_id: ScheduleId) -> Result<(), ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         unsafe {

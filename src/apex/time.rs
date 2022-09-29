@@ -2,10 +2,10 @@ use core::mem::MaybeUninit;
 
 use apex_rs::bindings::*;
 
-use super::VanillaHypervisor;
+use super::XngHypervisor;
 use crate::bindings::*;
 
-impl ApexTimeP4 for VanillaHypervisor {
+impl ApexTimeP4 for XngHypervisor {
     fn periodic_wait() -> Result<(), ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         unsafe {
@@ -23,7 +23,7 @@ impl ApexTimeP4 for VanillaHypervisor {
     }
 }
 
-impl ApexTimeP1 for VanillaHypervisor {
+impl ApexTimeP1 for XngHypervisor {
     fn timed_wait<L: Locked>(delay_time: ApexSystemTime) {
         unsafe { TIMED_WAIT(delay_time, MaybeUninit::uninit().as_mut_ptr()) }
     }

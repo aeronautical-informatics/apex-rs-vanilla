@@ -2,10 +2,10 @@ use core::mem::MaybeUninit;
 
 use apex_rs::bindings::*;
 
-use super::VanillaHypervisor;
+use super::XngHypervisor;
 use crate::bindings::*;
 
-impl ApexQueuingPortP4 for VanillaHypervisor {
+impl ApexQueuingPortP4 for XngHypervisor {
     fn create_queuing_port<L: Locked>(
         queuing_port_name: QueuingPortName,
         max_message_size: MessageSize,
@@ -103,7 +103,7 @@ impl ApexQueuingPortP4 for VanillaHypervisor {
     }
 }
 
-impl ApexQueuingPortP1 for VanillaHypervisor {
+impl ApexQueuingPortP1 for XngHypervisor {
     fn get_queuing_port_id<L: Locked>(
         queuing_port_name: QueuingPortName,
     ) -> Result<QueuingPortId, ErrorReturnCode> {
