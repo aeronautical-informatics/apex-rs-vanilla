@@ -26,7 +26,7 @@
         rec {
           devShells.default = (pkgs.devshell.mkShell {
             imports = [ "${devshell}/extra/git/hooks.nix" ];
-            name = "apex-rs-vanilla-dev-shell";
+            name = "apex-rs-xng-dev-shell";
             packages = with pkgs; [
               clang
               rust-toolchain

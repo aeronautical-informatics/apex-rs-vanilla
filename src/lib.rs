@@ -1,4 +1,4 @@
-//! Bindings to a vanilla implementation of the ARINC653 P1/P2/P4 API
+//! Bindings to a XNG MonoCore implementation of the ARINC653 P1/P2/P4 API
 
 #![no_std]
 #![deny(missing_docs)]

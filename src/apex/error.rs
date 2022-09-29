@@ -56,9 +56,11 @@ impl ApexErrorP1 for VanillaHypervisor {
     }
 
     fn configure_error_handler<L: Locked>(
-        concurrency_control: ErrorHandlerConcurrencyControl,
-        processor_core_id: ProcessorCoreId,
+        _concurrency_control: ErrorHandlerConcurrencyControl,
+        _processor_core_id: ProcessorCoreId,
     ) -> Result<(), ErrorReturnCode> {
+        // TODO make this functional once the function lands in LithOS
+        /*
         let mut return_code = MaybeUninit::uninit();
         unsafe {
             CONFIGURE_ERROR_HANDLER(
@@ -68,5 +70,7 @@ impl ApexErrorP1 for VanillaHypervisor {
             );
             ErrorReturnCode::from(return_code.assume_init())
         }
+        */
+        Err(ErrorReturnCode::NotAvailable)
     }
 }
