@@ -17,3 +17,25 @@ pub mod bindings {
 
 /// This module contains the mappings from [crate::bindings] to [apex_rs::bindings]
 pub mod apex;
+
+/// This panic handler reports the reason for a panic to the hypervisor and
+/// then enters an infinite loop
+#[panic_handler]
+fn panic(info: &core::panic::PanicInfo) -> ! {
+    let message = match info.payload().downcast_ref::<&str>() {
+        Some(str) => str,
+        None => "panic of unknown cause occured",
+    };
+
+    // This function can fail if the message len in bytes is longer than
+    // MAX_ERROR_MESSAGE_SIZE. To make it safe to unwrap, we have to shorten
+    // the message if it exceeds the allowed length. As the slicing only happen
+    // on the byte level, cutting of a multi-byte char (UTF-8) will not yield
+    // internal panic, but of course it might disturb the hypervisors output.
+    <apex::XngHypervisor as apex_rs::prelude::ApexErrorP4Ext>::raise_application_error(
+        &message.as_bytes()[0..bindings::MAX_ERROR_MESSAGE_SIZE as usize],
+    )
+    .unwrap();
+
+    loop {}
+}
