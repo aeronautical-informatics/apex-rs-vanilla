@@ -1,5 +1,5 @@
 [package]
-name = "apex-rs-xng"
+name = "a653rs-xng"
 version = "0.1.0"
 edition = "2021"
 authors = [
@@ -12,4 +12,4 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 cty = "*"
-apex-rs = { git = "https://github.com/aeronautical-informatics/apex-rs.git", branch = "main", features = ["strum"] }
+a653rs = { version = "0.2", features = ["strum"] }

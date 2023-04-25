@@ -15,7 +15,7 @@ pub mod bindings {
     include!("bindings.rs");
 }
 
-/// This module contains the mappings from [crate::bindings] to [apex_rs::bindings]
+/// This module contains the mappings from [crate::bindings] to [a653rs::bindings]
 pub mod apex;
 
 /// This panic handler reports the reason for a panic to the hypervisor and
@@ -32,7 +32,7 @@ fn panic(info: &core::panic::PanicInfo) -> ! {
     // the message if it exceeds the allowed length. As the slicing only happen
     // on the byte level, cutting of a multi-byte char (UTF-8) will not yield
     // internal panic, but of course it might disturb the hypervisors output.
-    <apex::XngHypervisor as apex_rs::prelude::ApexErrorP4Ext>::raise_application_error(
+    <apex::XngHypervisor as a653rs::prelude::ApexErrorP4Ext>::raise_application_error(
         &message.as_bytes()[0..bindings::MAX_ERROR_MESSAGE_SIZE as usize],
     )
     .unwrap();

@@ -1,6 +1,6 @@
 use core::mem::MaybeUninit;
 
-use apex_rs::bindings::*;
+use a653rs::bindings::*;
 
 use super::XngHypervisor;
 use crate::bindings::*;

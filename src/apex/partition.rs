@@ -1,12 +1,12 @@
 use core::mem::MaybeUninit;
 
-use apex_rs::bindings::*;
+use a653rs::bindings::*;
 
 use super::XngHypervisor;
 use crate::bindings::*;
 
 impl ApexPartitionP4 for XngHypervisor {
-    fn get_partition_status<L: apex_rs::Locked>() -> ApexPartitionStatus {
+    fn get_partition_status<L: a653rs::Locked>() -> ApexPartitionStatus {
         let mut status = MaybeUninit::uninit();
         unsafe {
             GET_PARTITION_STATUS(status.as_mut_ptr(), MaybeUninit::uninit().as_mut_ptr());
@@ -28,7 +28,7 @@ impl ApexPartitionP4 for XngHypervisor {
         }
     }
 
-    fn set_partition_mode<L: apex_rs::Locked>(
+    fn set_partition_mode<L: a653rs::Locked>(
         operating_mode: OperatingMode,
     ) -> Result<(), ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
