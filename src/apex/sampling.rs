@@ -14,6 +14,12 @@ impl ApexSamplingPortP4 for XngHypervisor {
     ) -> Result<SamplingPortId, ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         let mut port_id = MaybeUninit::uninit();
+        const XNG_1_4_CREATE_SAMPLING_PORT_MAGIC_MINIMUM_REFRESH_PERIOD: ApexSystemTime = 2000; // ns
+        let refresh_period = if port_direction == PortDirection::Source {
+            XNG_1_4_CREATE_SAMPLING_PORT_MAGIC_MINIMUM_REFRESH_PERIOD
+        } else {
+            refresh_period
+        };
         unsafe {
             CREATE_SAMPLING_PORT(
                 sampling_port_name.map(|c| c as cty::c_char).as_mut_ptr(),
