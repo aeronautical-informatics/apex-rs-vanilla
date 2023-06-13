@@ -20,8 +20,11 @@ pub mod apex;
 
 /// This panic handler reports the reason for a panic to the hypervisor and
 /// then enters an infinite loop
+#[cfg(feature = "panic_handler")]
 #[panic_handler]
 fn panic(info: &core::panic::PanicInfo) -> ! {
+    log::error!("{info}");
+
     let message = match info.payload().downcast_ref::<&str>() {
         Some(str) => str,
         None => "panic of unknown cause occured",
