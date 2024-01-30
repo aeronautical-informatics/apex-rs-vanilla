@@ -12,4 +12,4 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 cty = "*"
-apex-rs = { git = "https://github.com/aeronautical-informatics/apex-rs.git", features = ["strum"] }
+a653rs = { version = "0.5", features = ["strum", "bindings"] }

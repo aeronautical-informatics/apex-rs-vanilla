@@ -1,12 +1,12 @@
 use core::mem::MaybeUninit;
 
-use apex_rs::bindings::*;
+use a653rs::bindings::*;
 
 use super::VanillaHypervisor;
 use crate::bindings::*;
 
 impl ApexErrorP4 for VanillaHypervisor {
-    fn report_application_message<L: Locked>(message: &[ApexByte]) -> Result<(), ErrorReturnCode> {
+    fn report_application_message(message: &[ApexByte]) -> Result<(), ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         unsafe {
             REPORT_APPLICATION_MESSAGE(
@@ -18,7 +18,7 @@ impl ApexErrorP4 for VanillaHypervisor {
         }
     }
 
-    fn raise_application_error<L: Locked>(
+    fn raise_application_error(
         error_code: ErrorCode,
         message: &[ApexByte],
     ) -> Result<(), ErrorReturnCode> {
@@ -36,7 +36,7 @@ impl ApexErrorP4 for VanillaHypervisor {
 }
 
 impl ApexErrorP1 for VanillaHypervisor {
-    fn create_error_handler<L: Locked>(
+    fn create_error_handler(
         entry_point: SystemAddress,
         stack_size: StackSize,
     ) -> Result<(), ErrorReturnCode> {
@@ -51,11 +51,11 @@ impl ApexErrorP1 for VanillaHypervisor {
         }
     }
 
-    fn get_error_status<L: Locked>() -> Result<ErrorStatus, ErrorReturnCode> {
+    fn get_error_status() -> Result<ErrorStatus, ErrorReturnCode> {
         todo!()
     }
 
-    fn configure_error_handler<L: Locked>(
+    fn configure_error_handler(
         concurrency_control: ErrorHandlerConcurrencyControl,
         processor_core_id: ProcessorCoreId,
     ) -> Result<(), ErrorReturnCode> {

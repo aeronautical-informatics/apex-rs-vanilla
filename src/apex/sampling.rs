@@ -1,12 +1,12 @@
 use core::mem::MaybeUninit;
 
-use apex_rs::bindings::*;
+use a653rs::bindings::*;
 
 use super::VanillaHypervisor;
 use crate::bindings::*;
 
 impl ApexSamplingPortP4 for VanillaHypervisor {
-    fn create_sampling_port<L: Locked>(
+    fn create_sampling_port(
         sampling_port_name: SamplingPortName,
         max_message_size: MessageSize,
         port_direction: PortDirection,
@@ -28,7 +28,7 @@ impl ApexSamplingPortP4 for VanillaHypervisor {
         }
     }
 
-    fn write_sampling_message<L: Locked>(
+    fn write_sampling_message(
         sampling_port_id: SamplingPortId,
         message: &[ApexByte],
     ) -> Result<(), ErrorReturnCode> {
@@ -44,7 +44,7 @@ impl ApexSamplingPortP4 for VanillaHypervisor {
         }
     }
 
-    unsafe fn read_sampling_message<L: Locked>(
+    unsafe fn read_sampling_message(
         sampling_port_id: SamplingPortId,
         message: &mut [ApexByte],
     ) -> Result<(Validity, MessageSize), ErrorReturnCode> {
@@ -67,7 +67,7 @@ impl ApexSamplingPortP4 for VanillaHypervisor {
 }
 
 impl ApexSamplingPortP1 for VanillaHypervisor {
-    fn get_sampling_port_id<L: Locked>(
+    fn get_sampling_port_id(
         sampling_port_name: SamplingPortName,
     ) -> Result<SamplingPortId, ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
@@ -83,7 +83,7 @@ impl ApexSamplingPortP1 for VanillaHypervisor {
         }
     }
 
-    fn get_sampling_port_status<L: Locked>(
+    fn get_sampling_port_status(
         sampling_port_id: SamplingPortId,
     ) -> Result<ApexSamplingPortStatus, ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();

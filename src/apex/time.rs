@@ -1,6 +1,6 @@
 use core::mem::MaybeUninit;
 
-use apex_rs::bindings::*;
+use a653rs::bindings::*;
 
 use super::VanillaHypervisor;
 use crate::bindings::*;
@@ -24,11 +24,15 @@ impl ApexTimeP4 for VanillaHypervisor {
 }
 
 impl ApexTimeP1 for VanillaHypervisor {
-    fn timed_wait<L: Locked>(delay_time: ApexSystemTime) {
-        unsafe { TIMED_WAIT(delay_time, MaybeUninit::uninit().as_mut_ptr()) }
+    fn timed_wait(delay_time: ApexSystemTime) -> Result<(), ErrorReturnCode> {
+        let mut return_code = MaybeUninit::uninit();
+        unsafe {
+            TIMED_WAIT(delay_time, return_code.as_mut_ptr());
+            ErrorReturnCode::from(return_code.assume_init())
+        }
     }
 
-    fn replenish<L: Locked>(budget_time: ApexSystemTime) -> Result<(), ErrorReturnCode> {
+    fn replenish(budget_time: ApexSystemTime) -> Result<(), ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         unsafe {
             REPLENISH(budget_time, return_code.as_mut_ptr());

@@ -7,5 +7,5 @@
 /// This module contains bindings to the services defined by ARINC653
 pub mod bindings;
 
-/// This module contains the mappings from [crate::bindings] to [apex_rs::bindings]
+/// This module contains the mappings from [crate::bindings] to [a653rs::bindings]
 pub mod apex;

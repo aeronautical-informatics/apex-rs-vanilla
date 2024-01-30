@@ -1,14 +1,12 @@
 use core::mem::MaybeUninit;
 
-use apex_rs::bindings::*;
+use a653rs::bindings::*;
 
 use super::VanillaHypervisor;
 use crate::bindings::*;
 
 impl ApexProcessP4 for VanillaHypervisor {
-    fn create_process<L: Locked>(
-        attributes: &ApexProcessAttribute,
-    ) -> Result<ProcessId, ErrorReturnCode> {
+    fn create_process(attributes: &ApexProcessAttribute) -> Result<ProcessId, ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         let mut process_id = MaybeUninit::uninit();
         let mut process_attr = MaybeUninit::new(PROCESS_ATTRIBUTE_TYPE {
@@ -31,7 +29,7 @@ impl ApexProcessP4 for VanillaHypervisor {
         }
     }
 
-    fn start<L: Locked>(process_id: ProcessId) -> Result<(), ErrorReturnCode> {
+    fn start(process_id: ProcessId) -> Result<(), ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         unsafe {
             START(process_id as PROCESS_ID_TYPE, return_code.as_mut_ptr());
@@ -41,10 +39,7 @@ impl ApexProcessP4 for VanillaHypervisor {
 }
 
 impl ApexProcessP1 for VanillaHypervisor {
-    fn set_priority<L: Locked>(
-        process_id: ProcessId,
-        priority: Priority,
-    ) -> Result<(), ErrorReturnCode> {
+    fn set_priority(process_id: ProcessId, priority: Priority) -> Result<(), ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         unsafe {
             SET_PRIORITY(
@@ -56,7 +51,7 @@ impl ApexProcessP1 for VanillaHypervisor {
         }
     }
 
-    fn suspend_self<L: Locked>(time_out: ApexSystemTime) -> Result<(), ErrorReturnCode> {
+    fn suspend_self(time_out: ApexSystemTime) -> Result<(), ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         unsafe {
             SUSPEND_SELF(time_out, return_code.as_mut_ptr());
@@ -64,7 +59,7 @@ impl ApexProcessP1 for VanillaHypervisor {
         }
     }
 
-    fn suspend<L: Locked>(process_id: ProcessId) -> Result<(), ErrorReturnCode> {
+    fn suspend(process_id: ProcessId) -> Result<(), ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         unsafe {
             SUSPEND(process_id as PROCESS_ID_TYPE, return_code.as_mut_ptr());
@@ -72,7 +67,7 @@ impl ApexProcessP1 for VanillaHypervisor {
         }
     }
 
-    fn resume<L: Locked>(process_id: ProcessId) -> Result<(), ErrorReturnCode> {
+    fn resume(process_id: ProcessId) -> Result<(), ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         unsafe {
             RESUME(process_id as PROCESS_ID_TYPE, return_code.as_mut_ptr());
@@ -80,13 +75,13 @@ impl ApexProcessP1 for VanillaHypervisor {
         }
     }
 
-    fn stop_self<L: Locked>() {
+    fn stop_self() {
         unsafe {
             STOP_SELF();
         }
     }
 
-    fn stop<L: Locked>(process_id: ProcessId) -> Result<(), ErrorReturnCode> {
+    fn stop(process_id: ProcessId) -> Result<(), ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         unsafe {
             STOP(process_id as PROCESS_ID_TYPE, return_code.as_mut_ptr());
@@ -94,7 +89,7 @@ impl ApexProcessP1 for VanillaHypervisor {
         }
     }
 
-    fn delayed_start<L: Locked>(
+    fn delayed_start(
         process_id: ProcessId,
         delay_time: ApexSystemTime,
     ) -> Result<(), ErrorReturnCode> {
@@ -109,7 +104,7 @@ impl ApexProcessP1 for VanillaHypervisor {
         }
     }
 
-    fn lock_preemption<L: Locked>() -> Result<LockLevel, ErrorReturnCode> {
+    fn lock_preemption() -> Result<LockLevel, ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         let mut lock_level = MaybeUninit::uninit();
         unsafe {
@@ -119,7 +114,7 @@ impl ApexProcessP1 for VanillaHypervisor {
         }
     }
 
-    fn unlock_preemption<L: Locked>() -> Result<LockLevel, ErrorReturnCode> {
+    fn unlock_preemption() -> Result<LockLevel, ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         let mut lock_level = MaybeUninit::uninit();
         unsafe {
@@ -129,7 +124,7 @@ impl ApexProcessP1 for VanillaHypervisor {
         }
     }
 
-    fn get_my_id<L: Locked>() -> Result<ProcessId, ErrorReturnCode> {
+    fn get_my_id() -> Result<ProcessId, ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         let mut process_id = MaybeUninit::uninit();
         unsafe {
@@ -139,7 +134,7 @@ impl ApexProcessP1 for VanillaHypervisor {
         }
     }
 
-    fn get_process_id<L: Locked>(process_name: ProcessName) -> Result<ProcessId, ErrorReturnCode> {
+    fn get_process_id(process_name: ProcessName) -> Result<ProcessId, ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         let mut process_id = MaybeUninit::uninit();
         unsafe {
@@ -153,9 +148,7 @@ impl ApexProcessP1 for VanillaHypervisor {
         }
     }
 
-    fn get_process_status<L: Locked>(
-        process_id: ProcessId,
-    ) -> Result<ApexProcessStatus, ErrorReturnCode> {
+    fn get_process_status(process_id: ProcessId) -> Result<ApexProcessStatus, ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         let mut status = MaybeUninit::uninit();
         unsafe {
@@ -183,7 +176,7 @@ impl ApexProcessP1 for VanillaHypervisor {
         }
     }
 
-    fn initialize_process_core_affinity<L: Locked>(
+    fn initialize_process_core_affinity(
         process_id: ProcessId,
         processor_core_id: ProcessorCoreId,
     ) -> Result<(), ErrorReturnCode> {
@@ -198,7 +191,7 @@ impl ApexProcessP1 for VanillaHypervisor {
         }
     }
 
-    fn get_my_processor_core_id<L: Locked>() -> ProcessorCoreId {
+    fn get_my_processor_core_id() -> ProcessorCoreId {
         let mut core_id = MaybeUninit::uninit();
         unsafe {
             GET_MY_PROCESSOR_CORE_ID(core_id.as_mut_ptr(), MaybeUninit::uninit().as_mut_ptr());
@@ -206,7 +199,7 @@ impl ApexProcessP1 for VanillaHypervisor {
         }
     }
 
-    fn get_my_index<L: Locked>() -> Result<ProcessIndex, ErrorReturnCode> {
+    fn get_my_index() -> Result<ProcessIndex, ErrorReturnCode> {
         let mut return_code = MaybeUninit::uninit();
         let mut process_index = MaybeUninit::uninit();
         unsafe {
